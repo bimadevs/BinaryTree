@@ -36,6 +36,82 @@ class BinaryTree {
         return current;
     }
 
+    // ============ SEARCH (Cari Node) ============
+
+    boolean search(int data) {
+        return searchRecursive(root, data);
+    }
+
+    private boolean searchRecursive(Node current, int data) {
+        if (current == null) return false;
+        if (data == current.data) return true;
+        if (data < current.data) return searchRecursive(current.left, data);
+        return searchRecursive(current.right, data);
+    }
+
+    // ============ DELETE (Hapus Node) ============
+    // Ada 3 kemungkinan saat menghapus node:
+    // 1. Node LEAF (tidak punya anak)      → hapus langsung
+    // 2. Node punya 1 CHILD                → ganti node dengan child-nya
+    // 3. Node punya 2 CHILDREN             → cari inorder successor,
+    //                                        ganti nilai, hapus successor
+
+    void delete(int data) {
+        // Cari dulu apakah data ada di tree
+        if (!search(data)) {
+            return;
+        }
+        root = deleteRecursive(root, data);
+    }
+
+    private Node deleteRecursive(Node current, int data) {
+        if (current == null) return null;
+
+        if (data < current.data) {
+            // Data ada di subtree kiri
+            current.left = deleteRecursive(current.left, data);
+        } else if (data > current.data) {
+            // Data ada di subtree kanan
+            current.right = deleteRecursive(current.right, data);
+        } else {
+            // Node ditemukan! Sekarang hapus.
+            // Case 1 & 2: Leaf atau 1 child
+            if (current.left == null) return current.right;
+            if (current.right == null) return current.left;
+
+            // Case 3: 2 children
+            // Cari inorder successor (nilai terkecil di subtree kanan)
+            int successorValue = findMin(current.right);
+            current.data = successorValue; // ganti nilai
+            // Hapus successor dari subtree kanan
+            current.right = deleteRecursive(current.right, successorValue);
+        }
+
+        return current;
+    }
+
+    // Cari nilai terkecil dalam subtree (untuk inorder successor)
+    private int findMin(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.data;
+    }
+
+    // ============ EDIT (Ubah Nilai Node) ============
+    // Caranya: cari node lama → hapus → insert node baru
+    // Ini yang paling aman agar BST property tetap terjaga.
+
+    boolean edit(int oldData, int newData) {
+        if (!search(oldData)) return false; // data lama tidak ditemukan
+        if (oldData == newData) return true; // sama saja, tidak perlu berubah
+        if (search(newData)) return false; // data baru sudah ada (duplikat)
+
+        delete(oldData);
+        insert(newData);
+        return true;
+    }
+
     // ============ TAMPILKAN TREE (Piramid Rapi) ============
 
     void display() {
