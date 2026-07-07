@@ -13,19 +13,24 @@ public class Main {
 
         do {
             System.out.println("\n========== MENU ==========");
-            System.out.println("1. Insert Node");
-            System.out.println("2. Tampilkan Tree");
-            System.out.println("3. Transversal Tree (In-order)");
-            System.out.println("4. Transversal Pre-order");
-            System.out.println("5. Transversal Post-order");
-            System.out.println("6. Edit Node");
-            System.out.println("7. Hapus Node");
-            System.out.println("8. Keluar");
+            System.out.println("1.  Insert Node");
+            System.out.println("2.  Tampilkan Tree");
+            System.out.println("3.  Transversal Tree (In-order)");
+            System.out.println("4.  Transversal Pre-order");
+            System.out.println("5.  Transversal Post-order");
+            System.out.println("6.  Edit Node");
+            System.out.println("7.  Hapus Node");
+            System.out.println("8.  Cari Node (Search)");
+            System.out.println("9.  Nilai Minimum");
+            System.out.println("10. Nilai Maksimum");
+            System.out.println("11. Informasi Tree");
+            System.out.println("12. Reset Tree");
+            System.out.println("13. Keluar");
             System.out.print("Pilihan: ");
 
             // Validasi input angka
             while (!scanner.hasNextInt()) {
-                System.out.println("Input tidak valid! Masukkan angka 1-8.");
+                System.out.println("Input tidak valid! Masukkan angka 1-13.");
                 scanner.next();
                 System.out.print("Pilihan: ");
             }
@@ -130,14 +135,62 @@ public class Main {
                     break;
 
                 case 8:
+                    System.out.print("Masukkan data yang dicari: ");
+                    while (!scanner.hasNextInt()) {
+                        System.out.println("Input tidak valid! Masukkan angka.");
+                        scanner.next();
+                        System.out.print("Masukkan data yang dicari: ");
+                    }
+                    int searchData = scanner.nextInt();
+                    if (tree.search(searchData)) {
+                        System.out.println("Node " + searchData + " DITEMUKAN di dalam tree!");
+                    } else {
+                        System.out.println("Node " + searchData + " TIDAK ditemukan!");
+                    }
+                    break;
+
+                case 9:
+                    if (tree.isEmpty()) {
+                        System.out.println("Tree masih kosong!");
+                    } else {
+                        int min = tree.findMin();
+                        System.out.println("Nilai MINIMUM di tree: " + min);
+                    }
+                    break;
+
+                case 10:
+                    if (tree.isEmpty()) {
+                        System.out.println("Tree masih kosong!");
+                    } else {
+                        int max = tree.findMax();
+                        System.out.println("Nilai MAKSIMUM di tree: " + max);
+                    }
+                    break;
+
+                case 11:
+                    if (tree.isEmpty()) {
+                        System.out.println("Tree masih kosong!");
+                    } else {
+                        System.out.println("--- INFORMASI TREE ---");
+                        System.out.println("Total Node       : " + tree.countNodes());
+                        System.out.println("Tinggi (Height)  : " + tree.getTreeHeight());
+                    }
+                    break;
+
+                case 12:
+                    tree.clear();
+                    System.out.println("Tree berhasil direset (semua node dihapus)!");
+                    break;
+
+                case 13:
                     System.out.println("Terima kasih!");
                     break;
 
                 default:
-                    System.out.println("Pilihan tidak valid! Masukkan angka 1-8.");
+                    System.out.println("Pilihan tidak valid! Masukkan angka 1-13.");
                     break;
             }
-        } while (pilihan != 8);
+        } while (pilihan != 13);
 
         scanner.close();
     }

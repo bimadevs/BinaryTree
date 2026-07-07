@@ -216,4 +216,51 @@ class BinaryTree {
     boolean isEmpty() {
         return root == null;
     }
+
+    // ============ CARI NILAI MINIMUM & MAXIMUM ============
+
+    // Public wrapper untuk mencari nilai TERKECIL di tree
+    int findMin() {
+        if (root == null) {
+            throw new java.util.NoSuchElementException("Tree kosong, tidak ada nilai!");
+        }
+        return findMin(root);
+    }
+
+    // Public wrapper untuk mencari nilai TERBESAR di tree
+    int findMax() {
+        if (root == null) {
+            throw new java.util.NoSuchElementException("Tree kosong, tidak ada nilai!");
+        }
+        Node current = root;
+        while (current.right != null) {
+            current = current.right;
+        }
+        return current.data;
+    }
+
+    // ============ INFORMASI TREE ============
+
+    // Hitung total jumlah node di tree (rekursif)
+    int countNodes() {
+        return countNodesRecursive(root);
+    }
+
+    private int countNodesRecursive(Node node) {
+        if (node == null) return 0;
+        return 1 + countNodesRecursive(node.left) + countNodesRecursive(node.right);
+    }
+
+    // Public wrapper untuk mendapatkan tinggi tree
+    int getTreeHeight() {
+        return getHeight(root);
+    }
+
+    // ============ RESET TREE ============
+
+    // Hapus seluruh node di tree
+    void clear() {
+        root = null;
+        // Java Garbage Collection otomatis bersihkan node yang tidak terpakai
+    }
 }
